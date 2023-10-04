@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo, useContext, useState } from "react";
 
 import { useQuery } from "@apollo/react-hooks";
 import PageTitle from "../../../layouts/PageTitle";
@@ -8,6 +8,7 @@ import {
   useFilters,
   usePagination,
 } from "react-table";
+import Modal from "react-bootstrap/Modal";
 import { COLUMNS } from "./Columns";
 import { GlobalFilter } from "./GlobalFilter";
 //import './table.css';
@@ -16,6 +17,7 @@ import { AuthContext } from "../../context-auth/auth";
 import { GET_USERS } from "../../../../Graphql/Queries";
 
 export const FilteringTable = () => {
+  const [show, setShow] = useState(false);
   const { user } = useContext(AuthContext);
 
   const { loading: userLoading, data: userApplications } = useQuery(GET_USERS, {

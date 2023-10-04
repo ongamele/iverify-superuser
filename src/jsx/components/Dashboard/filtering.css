@@ -41,10 +41,10 @@
   border-radius: 10px;
   display: inline-block;
   background-color: #fff;
-  color: #009bd7;
+  color: #e23428;
 }
 .filter-pagination button:hover {
-  background: #009bd7;
+  background: #e23428;
   color: #fff;
 }
 .filter-pagination button[disabled] {
@@ -52,7 +52,7 @@
   cursor: default;
 }
 .filter-pagination button[disabled]:hover {
-  background: #009bd7;
+  background: #e23428;
   opacity: 0.5;
   color: #fff;
 }
@@ -70,4 +70,16 @@
     padding: 8px 10px;
     font-size: 14px;
   }
+}
+
+.upload-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-section {
+  justify-content: center;
+  align-items: center;
+  margin: 14px;
 }

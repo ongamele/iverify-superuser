@@ -43,25 +43,157 @@ export const GET_APPLICATIONS = gql`
 `;
 
 export const GET_SUCCESSFUL_APPLICATIONS = gql`
-  query getSuccessfulApplications($userId: String!) {
-    getSuccessfulApplications(userId: $userId)
+  query getSuccessfulApplicationsCount($userId: String!) {
+    getSuccessfulApplicationsCount(userId: $userId)
   }
 `;
 
 export const GET_FAILED_APPLICATIONS = gql`
-  query getFailedApplications($userId: String!) {
-    getFailedApplications(userId: $userId)
+  query getFailedApplicationsCount($userId: String!) {
+    getFailedApplicationsCount(userId: $userId)
   }
 `;
 
 export const GET_ALL_APPLICATIONS = gql`
-  query getAllApplications($userId: String!) {
-    getAllApplications(userId: $userId)
+  query getAllApplicationsCount($userId: String!) {
+    getAllApplicationsCount(userId: $userId)
   }
 `;
 
 export const GET_LATEST_APPLICATIONS = gql`
-  query getLatestApplications($userId: String!) {
-    getLatestApplications(userId: $userId)
+  query getLatestApplicationsCount($userId: String!) {
+    getLatestApplicationsCount(userId: $userId)
+  }
+`;
+
+export const GET_ALL_USER_APPLICATIONS = gql`
+  query getAllUserApplicationsCount {
+    getAllUserApplicationsCount
+  }
+`;
+
+export const GET_ALL_APPROVED = gql`
+  query getAllApprovedCount {
+    getAllApprovedCount
+  }
+`;
+
+export const GET_ALL_DECLINED = gql`
+  query getAllDeclinedCount {
+    getAllDeclinedCount
+  }
+`;
+
+export const GET_APPROVED_MUNICIPALITY_APPLICATIONS_COUNT = gql`
+  query getApprovedMunicipalityApplicationsCount($municipality: String!) {
+    getApprovedMunicipalityApplicationsCount(municipality: $municipality)
+  }
+`;
+
+export const GET_DECLINED_MUNICIPALITY_APPLICATIONS_COUNT = gql`
+  query getDeclinedMunicipalityApplicationsCount($municipality: String!) {
+    getDeclinedMunicipalityApplicationsCount(municipality: $municipality)
+  }
+`;
+
+export const GET_PENDING_MUNICIPALITY_APPLICATIONS_COUNT = gql`
+  query getPendingMunicipalityApplicationsCount($municipality: String!) {
+    getPendingMunicipalityApplicationsCount(municipality: $municipality)
+  }
+`;
+
+export const GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT = gql`
+  query getTotalMunicipalityApplicationsCount($municipality: String!) {
+    getTotalMunicipalityApplicationsCount(municipality: $municipality)
+  }
+`;
+
+export const GET_ALL_MUNICIPALITY_APPLICATIONS = gql`
+  query getAllMunicipalityApplications($municipality: String!) {
+    getAllMunicipalityApplications(municipality: $municipality) {
+      id
+      userId
+      name
+      surname
+      email
+      phoneNumber
+      idNumber
+      address
+      postalCode
+      country
+      municipality
+      municipalAccountNumber
+      race
+      houseHoldHead
+      maritalStatus
+      dependents
+      bankStatement
+      idBook
+      wardNumber
+      affidavid
+      status
+      reason
+      createdAt
+    }
+  }
+`;
+
+export const GET_ALL_EXCEL_APPLICATIONS = gql`
+  query getAllAxcelApplications {
+    getAllExcelApplications {
+      id
+      userId
+      name
+      surname
+      email
+      phoneNumber
+      idNumber
+      address
+      postalCode
+      country
+      municipality
+      municipalAccountNumber
+      race
+      houseHoldHead
+      maritalStatus
+      dependents
+      bankStatement
+      idBook
+      wardNumber
+      affidavid
+      status
+      reason
+      createdAt
+    }
+  }
+`;
+
+export const GET_ACTIVE_INDIGENTS = gql`
+  query getActiveIndigents {
+    getActiveIndigents {
+      id
+      userId
+      name
+      surname
+      email
+      phoneNumber
+      idNumber
+      address
+      postalCode
+      country
+      municipality
+      municipalAccountNumber
+      race
+      houseHoldHead
+      maritalStatus
+      dependents
+      bankStatement
+      idBook
+      wardNumber
+      affidavid
+      status
+      reason
+      createdAt
+    }
   }
 `;

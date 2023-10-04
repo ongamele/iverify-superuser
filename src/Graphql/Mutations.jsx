@@ -80,6 +80,7 @@ export const CREATE_USER = gql`
     $email: String!
     $idNumber: String!
     $municipality: String!
+    $password: String!
   ) {
     createUser(
       registerInput: {
@@ -89,6 +90,7 @@ export const CREATE_USER = gql`
         email: $email
         idNumber: $idNumber
         municipality: $municipality
+        password: $password
       }
     ) {
       id

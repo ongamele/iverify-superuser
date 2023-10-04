@@ -40,15 +40,15 @@ const Details = ({ id }) => {
   var successCount = 0;
   var failureCount = 0;
 
-  if (failedApplications && failedApplications.getFailedApplications) {
-    failureCount = failedApplications.getFailedApplications;
+  if (failedApplications && failedApplications.getFailedApplicationsCount) {
+    failureCount = failedApplications.getFailedApplicationsCount;
   }
 
   if (
     successfulApplications &&
-    successfulApplications.getSuccessfulApplications
+    successfulApplications.getSuccessfulApplicationsCount
   ) {
-    successCount = successfulApplications.getSuccessfulApplications;
+    successCount = successfulApplications.getSuccessfulApplicationsCount;
   }
 
   function successPercentage(success, fail) {
@@ -72,13 +72,13 @@ const Details = ({ id }) => {
                         <span>
                           <i
                             className="fas fa-book"
-                            style={{ fontSize: "22px", color: "#E23428" }}
+                            style={{ fontSize: "22px", color: "#009BD7" }}
                           />
                         </span>
                         <div className="ms-4">
                           <h2 className="mb-0 font-w600">
                             {totalApplications &&
-                              totalApplications.getAllApplications}
+                              totalApplications.getAllApplicationsCount}
                           </h2>
                           <p className="mb-0 text-nowrap">Total Requests</p>
                         </div>
@@ -93,14 +93,14 @@ const Details = ({ id }) => {
                         <span>
                           <i
                             className="fas fa-clipboard"
-                            style={{ fontSize: "22px", color: "#E23428" }}
+                            style={{ fontSize: "22px", color: "#009BD7" }}
                           />
                         </span>
                         <div className="ms-4">
                           <h2 className="mb-0 font-w600">
                             {" "}
                             {latestApplications &&
-                              latestApplications.getLatestApplications}
+                              latestApplications.getLatestApplicationsCount}
                           </h2>
                           <p className="mb-0 text-nowrap ">New Requests</p>
                         </div>
@@ -115,13 +115,13 @@ const Details = ({ id }) => {
                         <span>
                           <i
                             className="fas fa-users"
-                            style={{ fontSize: "22px", color: "#E23428" }}
+                            style={{ fontSize: "22px", color: "#009BD7" }}
                           />
                         </span>
                         <div className="ms-4">
                           <h2 className="mb-0 font-w600">
                             {successfulApplications &&
-                              successfulApplications.getSuccessfulApplications}
+                              successfulApplications.getSuccessfulApplicationsCount}
                           </h2>
                           <p className="mb-0">Approved</p>
                         </div>
@@ -136,13 +136,13 @@ const Details = ({ id }) => {
                         <span>
                           <i
                             className="fas fa-exclamation"
-                            style={{ fontSize: "22px", color: "#E23428" }}
+                            style={{ fontSize: "22px", color: "#009BD7" }}
                           />
                         </span>
                         <div className="ms-4">
                           <h2 className="mb-0 font-w600">
                             {failedApplications &&
-                              failedApplications.getFailedApplications}
+                              failedApplications.getFailedApplicationsCount}
                           </h2>
                           <p className="mb-0">Rejected</p>
                         </div>

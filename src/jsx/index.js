@@ -20,6 +20,9 @@ import Home from "./components/Dashboard/Home";
 /// Widget
 import Widget from "./pages/Widget";
 
+/// Active Applications
+import ActiveApplications from "./pages/ActiveApplications";
+
 /// Table
 import FilteringTable from "./components/table/FilteringTable/FilteringTable";
 
@@ -38,6 +41,9 @@ const Markup = () => {
 
     /// Widget
     { url: "widget-basic", component: <Widget /> },
+
+    //Active Applications
+    { url: "active-applications", component: <ActiveApplications /> },
 
     /// Form
     { url: "form-wizard", component: <Wizard /> },

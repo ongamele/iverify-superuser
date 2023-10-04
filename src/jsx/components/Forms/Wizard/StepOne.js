@@ -8,9 +8,6 @@ const StepOne = ({ sendDataToParent }) => {
   const [idNumber, setIdNumber] = useState("");
   const [municipality, setMunicipality] = useState("");
 
-  //Consent
-  const [isConsent, setIsConsent] = useState(false);
-
   const data = {
     email,
     name,

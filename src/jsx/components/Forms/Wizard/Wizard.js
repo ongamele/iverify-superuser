@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from "react";
 //import Multistep from "react-multistep";
 import { Stepper, Step } from "react-form-stepper";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
@@ -13,6 +15,7 @@ import { CREATE_USER } from "../../../../Graphql/Mutations.jsx";
 import { Alert } from "react-bootstrap";
 
 const Wizard = () => {
+  const navigate = useNavigate();
   const [goSteps, setGoSteps] = useState(0);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -20,8 +23,6 @@ const Wizard = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [idNumber, setIdNumber] = useState("");
   const [municipality, setMunicipality] = useState("");
-
-  const [otp, setOtp] = useState();
 
   const receiveDataFromChild = (data) => {
     setEmail(data.email);
@@ -32,6 +33,14 @@ const Wizard = () => {
     setMunicipality(data.municipality);
   };
 
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  var newPassword = "";
+
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    newPassword += characters.charAt(randomIndex);
+  }
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -39,7 +48,42 @@ const Wizard = () => {
     update(_, result) {
       if (result) {
         alert("User Added!");
-        // setGoSteps(1);
+
+        const sendSMS = async () => {
+          try {
+            const apiKey =
+              "2319f2b218dfee20edf691f73ccba12f-73d582c6-316c-4b53-a90c-1c0c1fa1c94f";
+            const message = `Hello, Your Iverify Password is ${newPassword}`;
+
+            const response = await axios.post(
+              "https://api.infobip.com/sms/1/text/single",
+              {
+                from: "27872406515",
+                to: "27" + phoneNumber.toString(),
+                text: message,
+              },
+              {
+                headers: {
+                  Authorization: `App ${apiKey}`,
+                },
+              }
+            );
+
+            console.log("SMS sent successfully:", response.data);
+          } catch (error) {
+            console.error("Error sending SMS:", error);
+          }
+        };
+
+        sendSMS();
+
+        const redirectToPage = () => {
+          setTimeout(() => {
+            navigate("/widget-basic");
+          }, 3000);
+        };
+
+        redirectToPage();
       }
     },
     onError(err) {
@@ -63,6 +107,7 @@ const Wizard = () => {
       idNumber != "",
       municipality != "")
     ) {
+      alert(newPassword);
       if (validateEmail(email)) {
         createUser({
           variables: {
@@ -72,6 +117,7 @@ const Wizard = () => {
             phoneNumber: parseInt(phoneNumber),
             idNumber,
             municipality,
+            password: newPassword,
           },
         });
       } else {
