@@ -52,11 +52,13 @@ const Details = ({ id }) => {
   }
 
   function successPercentage(success, fail) {
-    return (success * 100) / fail;
+    var tot = fail + success;
+    return (success * 100) / tot;
   }
 
   function failurePercentage(success, fail) {
-    return (fail * 100) / success;
+    var tot = fail + success;
+    return (fail * 100) / tot;
   }
   return (
     <>
@@ -157,7 +159,12 @@ const Details = ({ id }) => {
                 <div className="col-xl-6">
                   <div className="row">
                     <div className="col-xl-6 col-sm-6">
-                      <div className="card bg-secondary">
+                      <div
+                        className="card"
+                        style={{
+                          backgroundColor: "#2AD45E",
+                          cursor: "pointer",
+                        }}>
                         <div className="card-body">
                           <div className="d-flex align-items-end pb-4 justify-content-between">
                             <span className="fs-14 font-w500 text-white">
@@ -166,13 +173,19 @@ const Details = ({ id }) => {
                             <span className="fs-20 font-w600 text-white">
                               <span className="pe-2"></span>
                               {successfulApplications &&
-                                successfulApplications.getSuccessfulApplications}
+                                successfulApplications.getSuccessfulApplicationsCount}
                             </span>
                           </div>
                           <div className="progress default-progress h-auto">
                             <div
                               className="progress-bar bg-white progress-animated"
-                              style={{ width: "0%", height: "13px" }}>
+                              style={{
+                                width: `${successPercentage(
+                                  successCount,
+                                  failureCount
+                                )}0%`,
+                                height: "13px",
+                              }}>
                               <span className="sr-only">
                                 {successPercentage(successCount, failureCount)}%
                                 Complete
@@ -183,7 +196,12 @@ const Details = ({ id }) => {
                       </div>
                     </div>
                     <div className="col-xl-6 col-sm-6">
-                      <div className="card bg-secondary">
+                      <div
+                        className="card "
+                        style={{
+                          backgroundColor: "#AD0900",
+                          cursor: "pointer",
+                        }}>
                         <div className="card-body">
                           <div className="d-flex align-items-end pb-4 justify-content-between">
                             <span className="fs-14 font-w500 text-white">
@@ -192,13 +210,19 @@ const Details = ({ id }) => {
                             <span className="fs-20 font-w600 text-white">
                               <span className="pe-2"></span>
                               {failedApplications &&
-                                failedApplications.getFailedApplications}
+                                failedApplications.getFailedApplicationsCount}
                             </span>
                           </div>
                           <div className="progress default-progress h-auto">
                             <div
                               className="progress-bar bg-white progress-animated"
-                              style={{ width: "0%", height: "13px" }}>
+                              style={{
+                                width: `${failurePercentage(
+                                  successCount,
+                                  failureCount
+                                )}%`,
+                                height: "13px",
+                              }}>
                               <span className="sr-only">
                                 {failurePercentage(successCount, failureCount)}%
                                 Complete
@@ -212,16 +236,6 @@ const Details = ({ id }) => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-xl-12">
-          <div className="card">
-            <div className="card-header border-0 pb-0">
-              <h4 className="fs-20">New Applications</h4>
-            </div>
-            <div className="card-body pt-0"></div>
           </div>
         </div>
       </div>

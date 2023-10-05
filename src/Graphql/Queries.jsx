@@ -42,6 +42,93 @@ export const GET_APPLICATIONS = gql`
   }
 `;
 
+export const GET_APPLICATIONS_SUPERUSER = gql`
+  query getApplicationsSuperuser {
+    getApplicationsSuperuser {
+      id
+      userId
+      name
+      surname
+      email
+      phoneNumber
+      idNumber
+      address
+      postalCode
+      country
+      municipality
+      municipalAccountNumber
+      race
+      houseHoldHead
+      maritalStatus
+      dependents
+      bankStatement
+      idBook
+      affidavid
+      status
+      reason
+      createdAt
+    }
+  }
+`;
+
+export const GET_ALL_APPROVED_APPLICATIONS_SUPERUSER = gql`
+  query getAllApprovedApplicationsSuperuser {
+    getAllApprovedApplicationsSuperuser {
+      id
+      userId
+      name
+      surname
+      email
+      phoneNumber
+      idNumber
+      address
+      postalCode
+      country
+      municipality
+      municipalAccountNumber
+      race
+      houseHoldHead
+      maritalStatus
+      dependents
+      bankStatement
+      idBook
+      affidavid
+      status
+      reason
+      createdAt
+    }
+  }
+`;
+
+export const GET_ALL_DECLINED_APPLICATIONS_SUPERUSER = gql`
+  query getAllDeclinedApplicationsSuperuser {
+    getAllDeclinedApplicationsSuperuser {
+      id
+      userId
+      name
+      surname
+      email
+      phoneNumber
+      idNumber
+      address
+      postalCode
+      country
+      municipality
+      municipalAccountNumber
+      race
+      houseHoldHead
+      maritalStatus
+      dependents
+      bankStatement
+      idBook
+      affidavid
+      status
+      reason
+      createdAt
+    }
+  }
+`;
+
 export const GET_SUCCESSFUL_APPLICATIONS = gql`
   query getSuccessfulApplicationsCount($userId: String!) {
     getSuccessfulApplicationsCount(userId: $userId)

@@ -7,6 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { AuthContext } from "../context-auth/auth";
 import Details from "./Details";
+import SelectedDetails from "./SelectedDetails";
 import { GET_ALL_USER_APPLICATIONS } from "../../../Graphql/Queries";
 import { GET_ALL_APPROVED } from "../../../Graphql/Queries";
 import { GET_ALL_DECLINED } from "../../../Graphql/Queries";
@@ -15,6 +16,9 @@ import { GET_ALL_EXCEL_APPLICATIONS } from "../../../Graphql/Queries";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const [show, setShow] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const [id, setId] = useState(false);
+  const [dataType, setDataType] = useState(false);
   const [municipality, setMunicipality] = useState();
   const { changeBackground } = useContext(ThemeContext);
   useEffect(() => {
@@ -24,14 +28,6 @@ const Home = () => {
   const { data: totalApplications } = useQuery(GET_ALL_USER_APPLICATIONS);
   const { data: allApproved } = useQuery(GET_ALL_APPROVED);
   const { data: allDeclined } = useQuery(GET_ALL_DECLINED);
-
-  function successPercentage(success, fail) {
-    return (success * 100) / fail;
-  }
-
-  function failurePercentage(success, fail) {
-    return (fail * 100) / success;
-  }
 
   var successCount = 0;
   var failureCount = 0;
@@ -44,87 +40,57 @@ const Home = () => {
     successCount = allApproved.getAllApprovedCount;
   }
 
+  function successPercentage(success, fail) {
+    var tot = fail + success;
+    return (success * 100) / tot;
+  }
+
+  function failurePercentage(success, fail) {
+    var tot = fail + success;
+    return (fail * 100) / tot;
+  }
+
   function handleDetails(municipality) {
     setMunicipality(municipality);
     setShow(true);
   }
 
-  const { data: totalJhbMunicipalityApplications } = useQuery(
+  const { data: totalMusinaMunicipalityApplications } = useQuery(
     GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
     {
       pollInterval: 4000,
       variables: {
-        municipality: "City of Johannesburg Metropolitan",
+        municipality: "Musina Local Municipality",
       },
     }
   );
 
-  const { data: totalBuffaloMunicipalityApplications } = useQuery(
+  const { data: totalMakhadoMunicipalityApplications } = useQuery(
     GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
     {
       pollInterval: 4000,
       variables: {
-        municipality: "Buffalo City Metropolitan",
+        municipality: "Makhado Local Municipality",
       },
     }
   );
 
-  const { data: totalEkurhuleniMunicipalityApplications } = useQuery(
+  const { data: totalColinsChabaneMunicipalityApplications } = useQuery(
     GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
     {
       pollInterval: 4000,
       variables: {
-        municipality: "City of Ekurhuleni Metropolitan",
+        municipality: "Collins Chabane Local Municipality",
       },
     }
   );
 
-  const { data: totalTshwaneMunicipalityApplications } = useQuery(
+  const { data: totalThulamelaMunicipalityApplications } = useQuery(
     GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
     {
       pollInterval: 4000,
       variables: {
-        municipality: "City of Tshwane Metropolitan",
-      },
-    }
-  );
-
-  const { data: totalMangaungMunicipalityApplications } = useQuery(
-    GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
-    {
-      pollInterval: 4000,
-      variables: {
-        municipality: "Mangaung Metropolitan",
-      },
-    }
-  );
-
-  const { data: totalCtMunicipalityApplications } = useQuery(
-    GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
-    {
-      pollInterval: 4000,
-      variables: {
-        municipality: "City of Cape Town Metropolitan",
-      },
-    }
-  );
-
-  const { data: totalEthekwiniMunicipalityApplications } = useQuery(
-    GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
-    {
-      pollInterval: 4000,
-      variables: {
-        municipality: "eThekwini Metropolitan",
-      },
-    }
-  );
-
-  const { data: totalNelsonMandelaMunicipalityApplications } = useQuery(
-    GET_TOTAL_MUNICIPALITY_APPLICATIONS_COUNT,
-    {
-      pollInterval: 4000,
-      variables: {
-        municipality: "Nelson Mandela Bay Metropolitan",
+        municipality: "Thulamela Local Municipality",
       },
     }
   );
@@ -141,6 +107,11 @@ const Home = () => {
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
     XLSX.writeFile(wb, "applications" + ".xlsx");
   };
+
+  function handleDetails(type) {
+    setDataType(type);
+    setShowCard(true);
+  }
   return (
     <>
       <Modal show={show} fullscreen={true} onHide={() => setShow(false)}>
@@ -151,13 +122,28 @@ const Home = () => {
           <Details municipality={municipality} />
         </Modal.Body>
       </Modal>
+
+      <Modal
+        show={showCard}
+        fullscreen={true}
+        onHide={() => setShowCard(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SelectedDetails dataType={dataType} id={id} />
+        </Modal.Body>
+      </Modal>
       <div className="row">
         <div className="col-xl-12">
           <div className="row">
             <div className="col-xl-12">
               <div className="row">
                 <div className="col-xl-3 col-sm-6">
-                  <div className="card booking">
+                  <div
+                    className="card booking"
+                    onClick={() => handleDetails("all")}
+                    style={{ cursor: "pointer" }}>
                     <div className="card-body">
                       <div className="booking-status d-flex align-items-center">
                         <span>
@@ -178,7 +164,10 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="col-xl-3 col-sm-6">
-                  <div className="card booking">
+                  <div
+                    className="card booking"
+                    onClick={() => handleDetails("approved")}
+                    style={{ cursor: "pointer" }}>
                     <div className="card-body">
                       <div className="booking-status d-flex align-items-center">
                         <span>
@@ -198,7 +187,10 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="col-xl-3 col-sm-6">
-                  <div className="card booking">
+                  <div
+                    className="card booking"
+                    onClick={() => handleDetails("declined")}
+                    style={{ cursor: "pointer" }}>
                     <div className="card-body">
                       <div className="booking-status d-flex align-items-center">
                         <span>
@@ -250,7 +242,11 @@ const Home = () => {
                     <div className="col-xl-6 col-sm-6">
                       <div
                         className="card"
-                        style={{ backgroundColor: "#2AD45E" }}>
+                        style={{
+                          backgroundColor: "#2AD45E",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleDetails("approved")}>
                         <div className="card-body">
                           <div className="d-flex align-items-end pb-4 justify-content-between">
                             <span className="fs-14 font-w500 text-white">
@@ -264,7 +260,13 @@ const Home = () => {
                           <div className="progress default-progress h-auto">
                             <div
                               className="progress-bar bg-white progress-animated"
-                              style={{ width: "0%", height: "13px" }}>
+                              style={{
+                                width: `${successPercentage(
+                                  successCount,
+                                  failureCount
+                                )}%`,
+                                height: "13px",
+                              }}>
                               <span className="sr-only">
                                 {successPercentage(successCount, failureCount)}%
                                 Complete
@@ -277,8 +279,11 @@ const Home = () => {
                     <div className="col-xl-6 col-sm-6">
                       <div
                         className="card"
-                        style={{ backgroundColor: "#AD0900" }}>
-                        >
+                        style={{
+                          backgroundColor: "#AD0900",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleDetails("declined")}>
                         <div className="card-body">
                           <div className="d-flex align-items-end pb-4 justify-content-between">
                             <span className="fs-14 font-w500 text-white">
@@ -292,7 +297,13 @@ const Home = () => {
                           <div className="progress default-progress h-auto">
                             <div
                               className="progress-bar bg-white progress-animated"
-                              style={{ width: "0%", height: "13px" }}>
+                              style={{
+                                width: `${failurePercentage(
+                                  successCount,
+                                  failureCount
+                                )}%`,
+                                height: "13px",
+                              }}>
                               <span className="sr-only">
                                 {failurePercentage(successCount, failureCount)}%
                                 Complete
@@ -324,29 +335,15 @@ const Home = () => {
                       className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
                       style={{ cursor: "pointer" }}
                       onClick={() =>
-                        handleDetails("Buffalo City Metropolitan")
+                        handleDetails("Makhado Local Municipality")
                       }>
                       <div className="text-center">
                         <h3 className="fs-28 font-w600">
-                          {totalBuffaloMunicipalityApplications &&
-                            totalBuffaloMunicipalityApplications.getTotalMunicipalityApplicationsCount}
-                        </h3>
-                        <span className="fs-16">Buffalo City Metropolitan</span>
-                      </div>
-                    </div>
-                    <div
-                      className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        handleDetails("City of Cape Town Metropolitan")
-                      }>
-                      <div className="text-center">
-                        <h3 className="fs-28 font-w600">
-                          {totalCtMunicipalityApplications &&
-                            totalCtMunicipalityApplications.getTotalMunicipalityApplicationsCount}
+                          {totalMakhadoMunicipalityApplications &&
+                            totalMakhadoMunicipalityApplications.getTotalMunicipalityApplicationsCount}
                         </h3>
                         <span className="fs-16">
-                          City of Cape Town Metropolitan
+                          Makhado Local Municipality
                         </span>
                       </div>
                     </div>
@@ -354,15 +351,15 @@ const Home = () => {
                       className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
                       style={{ cursor: "pointer" }}
                       onClick={() =>
-                        handleDetails("City of Ekurhuleni Metropolitan")
+                        handleDetails("Thulamela Local Municipality")
                       }>
                       <div className="text-center">
                         <h3 className="fs-28 font-w600">
-                          {totalEkurhuleniMunicipalityApplications &&
-                            totalEkurhuleniMunicipalityApplications.getTotalMunicipalityApplicationsCount}
+                          {totalThulamelaMunicipalityApplications &&
+                            totalThulamelaMunicipalityApplications.getTotalMunicipalityApplicationsCount}
                         </h3>
                         <span className="fs-16">
-                          City of Ekurhuleni Metropolitan
+                          Thulamela Local Municipality
                         </span>
                       </div>
                     </div>
@@ -370,15 +367,15 @@ const Home = () => {
                       className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
                       style={{ cursor: "pointer" }}
                       onClick={() =>
-                        handleDetails("City of Johannesburg Metropolitan")
+                        handleDetails("Collins Chabane Local Municipality")
                       }>
                       <div className="text-center">
                         <h3 className="fs-28 font-w600">
-                          {totalJhbMunicipalityApplications &&
-                            totalJhbMunicipalityApplications.getTotalMunicipalityApplicationsCount}
+                          {totalColinsChabaneMunicipalityApplications &&
+                            totalColinsChabaneMunicipalityApplications.getTotalMunicipalityApplicationsCount}
                         </h3>
-                        <span className="fs-16 wspace-no">
-                          City of Johannesburg Metropolitan
+                        <span className="fs-16">
+                          Collins Chabane Local Municipality
                         </span>
                       </div>
                     </div>
@@ -386,59 +383,15 @@ const Home = () => {
                       className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
                       style={{ cursor: "pointer" }}
                       onClick={() =>
-                        handleDetails("City of Tshwane Metropolitan")
+                        handleDetails("Musina Local Municipality")
                       }>
                       <div className="text-center">
                         <h3 className="fs-28 font-w600">
-                          {totalTshwaneMunicipalityApplications &&
-                            totalTshwaneMunicipalityApplications.getTotalMunicipalityApplicationsCount}
+                          {totalMusinaMunicipalityApplications &&
+                            totalMusinaMunicipalityApplications.getTotalMunicipalityApplicationsCount}
                         </h3>
                         <span className="fs-16 wspace-no">
-                          City of Tshwane Metropolitan
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleDetails("eThekwini Metropolitan")}>
-                      <div className="text-center">
-                        <h3 className="fs-28 font-w600">
-                          {totalEthekwiniMunicipalityApplications &&
-                            totalEthekwiniMunicipalityApplications.getTotalMunicipalityApplicationsCount}
-                        </h3>
-                        <span className="fs-16 wspace-no">
-                          eThekwini Metropolitan
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleDetails("Mangaung Metropolitan")}>
-                      <div className="text-center">
-                        <h3 className="fs-28 font-w600">
-                          {totalMangaungMunicipalityApplications &&
-                            totalMangaungMunicipalityApplications.getTotalMunicipalityApplicationsCount}
-                        </h3>
-                        <span className="fs-16 wspace-no">
-                          Mangaung Metropolitan
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="col-xl-3 col-sm-3 col-6 mb-4 col-xxl-6"
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        handleDetails("Nelson Mandela Bay Metropolitan")
-                      }>
-                      <div className="text-center">
-                        <h3 className="fs-28 font-w600">
-                          {totalNelsonMandelaMunicipalityApplications &&
-                            totalNelsonMandelaMunicipalityApplications.getTotalMunicipalityApplicationsCount}
-                        </h3>
-                        <span className="fs-16 wspace-no">
-                          Nelson Mandela Bay Metropolitan
+                          Musina Local Municipality
                         </span>
                       </div>
                     </div>
